@@ -1,2 +1,2 @@
 # POCHPC
-Solution avec CMAKE, Eigne, SPDLog et GTest
+Solution avec CMAKE, Eigen, SPDLog et GTest
