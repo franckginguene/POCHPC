@@ -1,19 +1,9 @@
 #pragma once
 
-namespace Model
-{
+//! Do something with Eigen
+//! @param[in]	threadId	thread id to print
+void somethingWithEigen(int threadId);
 
-	/**
-	 *	Do something qith Eigen
-	 *
-	 *	@param[in]	threadID	thread id to print
-	 */
-	void somethingWithEigen(int threadId);
-
-	/**
-	 *	Compute something in parallel 
-	 *
-	 *	@param[in]	nbThreads	Number of threads to instanciate
-	 */
-	void doSomethingParallel(const int nbThreads);
-}
+//! Compute something in parallel
+//! @param[in]	nbThreads	Number of threads to instanciate
+void doSomethingParallel(const int nbThreads);

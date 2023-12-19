@@ -1,14 +1,13 @@
-## Sources
-set(CLI_SOURCES
+include_directories(
+  ${CMAKE_SOURCE_DIR}/sources/Model/include
+  ${CMAKE_SOURCE_DIR}/sources/3rdParties/spdlog/include
 )
 
-## Executable
 add_executable(
   CLI
   main.cpp
 )
 
-## Libraries dependency
-target_link_libraries(CLI PUBLIC Model)
-
-include_directories(${CMAKE_SOURCE_DIR}/sources/3rdParties/spdlog-1.x/include)
+target_link_libraries(CLI
+	PUBLIC AuroraAPI
+)

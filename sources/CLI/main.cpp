@@ -9,7 +9,7 @@ int main()
 	spdlog::info("Logger initialized");
 
 	const int nbThreads = 1;
-	Model::doSomethingParallel(nbThreads);
+	doSomethingParallel(nbThreads);
 
 	return 0;
 }

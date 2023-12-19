@@ -1,24 +1,24 @@
-### Model
-add_library(Model
+include_directories(
+  PUBLIC include
+  PUBLIC ${CMAKE_SOURCE_DIR}/sources/3rdParties/spdlog/include
+  PUBLIC ${CMAKE_SOURCE_DIR}/sources/3rdParties/eigen
+  PUBLIC ${CMAKE_SOURCE_DIR}/sources/3rdParties/gtest/googletest/include
+)
+
+add_library(AuroraAPI
   include/Model/Factorial.h
   sources/Model/Factorial.cpp
 )
-target_include_directories(Model
-  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
-)
 
-### Model unit tests
+
+#http://google.github.io/googletest/quickstart-cmake.html
 enable_testing()
-add_executable(ModelTest
+add_executable(AuroraAPI_Test
   tests/FactorialTest.cpp
 )
-target_link_libraries(
-  ModelTest
-  Model gtest_main
+target_link_libraries(AuroraAPI_Test
+  PRIVATE AuroraAPI
+  PRIVATE GTest::gtest_main
 )
 include(GoogleTest)
-gtest_discover_tests(ModelTest)
-
-include_directories(${CMAKE_SOURCE_DIR}/sources/3rdParties/spdlog-1.x/include)
-include_directories(${CMAKE_SOURCE_DIR}/sources/3rdParties/eigen-3.4.0/)
-#target_include_directories(yourTarget PUBLIC ${CMAKE_SOURCE_DIR}/libs)
+gtest_discover_tests(AuroraAPI_Test)
