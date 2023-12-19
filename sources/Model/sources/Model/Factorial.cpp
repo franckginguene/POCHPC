@@ -5,7 +5,6 @@
 #include <Eigen/Eigen>
 #include <thread>
 
-
 void doSomethingParallel(const int nbThreads)
 {
 	// Vecteur pour stocker les objets de thread

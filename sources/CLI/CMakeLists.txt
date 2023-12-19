@@ -1,6 +1,6 @@
 include_directories(
   ${CMAKE_SOURCE_DIR}/sources/Model/include
-  ${CMAKE_SOURCE_DIR}/sources/3rdParties/spdlog-1.x/include
+  ${CMAKE_SOURCE_DIR}/sources/3rdParties/spdlog/include
 )
 
 add_executable(
@@ -9,5 +9,5 @@ add_executable(
 )
 
 target_link_libraries(CLI
-	PUBLIC Model
+	PUBLIC AuroraAPI
 )
