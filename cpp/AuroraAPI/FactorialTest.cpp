@@ -1,5 +1,5 @@
-#include "gtest/gtest.h"
-#include "spdlog/spdlog.h"
+#include <gtest/gtest.h>
+#include <spdlog/spdlog.h>
 #include "Factorial.h"
 
 TEST(Aurora, Eigen)
