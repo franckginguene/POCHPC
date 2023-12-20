@@ -2,10 +2,21 @@ cmake_minimum_required(VERSION 3.10)
 
 project(aurora VERSION 1.0.0 LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 14)#VS19
+# Configuration pour le mode Debug
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUG -W3")
+
+# Configuration pour le mode Release
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3")
+
+# Configuration commune
+set(CMAKE_CXX_STANDARD 17)#VS19
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# Définit un symbole pour récupérer le chemin du projet dans le code
+add_definitions(-DPROJECT_PATH="${CMAKE_SOURCE_DIR}")
+
 add_subdirectory(sources/Model)
+add_subdirectory(sources/Validation)
 add_subdirectory(sources/CLI)
 add_subdirectory(sources/3rdParties/spdlog)
 
