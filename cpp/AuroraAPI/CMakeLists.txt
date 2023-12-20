@@ -1,3 +1,5 @@
+enableStrictWarnings()
+
 add_library(AuroraAPI
 	Factorial.h
 	Factorial.cpp

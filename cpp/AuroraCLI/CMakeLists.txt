@@ -1,3 +1,5 @@
+enableStrictWarnings()
+
 add_executable(CLI
 	main.cpp
 )
