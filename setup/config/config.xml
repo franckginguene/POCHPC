@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<Installer>
-    <Name>ProjeTType</Name>
-    <Version>1.0.0</Version>
-    <Title>Sample Installer</Title>
-    <Publisher>SCALIAN</Publisher>
-    <StartMenuDir>SCALIAN</StartMenuDir>
-    <TargetDir>@HomeDir@/SCALIAN/ProjeTType</TargetDir>
-</Installer>
