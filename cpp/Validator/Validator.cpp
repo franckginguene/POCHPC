@@ -5,8 +5,10 @@
 #include <spdlog/spdlog.h>
 #include <Eigen/Eigen>
 
-void Validator::compareArrays(	const std::filesystem::path& dumpPath,
-								const std::list<const Eigen::ArrayXd*>& arraysList)
+Validator Validator::instance={};
+
+void Validator::compareArrays(const std::filesystem::path& dumpPath,
+										std::list<Ref<const Eigen::ArrayXd> > arraysList)
 {
 	m_status = Status::Running;
 
@@ -43,7 +45,7 @@ void Validator::compareArrays(	const std::filesystem::path& dumpPath,
 	}
 };
 
-bool Validator::checkArraysListCoherence(const std::list<const Eigen::ArrayXd*>& arraysList)
+bool Validator::checkArraysListCoherence(std::list<Ref<const Eigen::ArrayXd> > arraysList)
 {
 	// Empty list
 	if (arraysList.size() == 0)
@@ -54,7 +56,7 @@ bool Validator::checkArraysListCoherence(const std::list<const Eigen::ArrayXd*>&
 	}
 
 	// Empty Array(s)
-	bool atLeastOneEmpty = std::any_of(arraysList.begin(), arraysList.end(), [](const Eigen::ArrayXd* vec) {
+	bool atLeastOneEmpty = std::any_of(arraysList.begin(), arraysList.end(), [](Ref<const Eigen::ArrayXd>& vec) {
 		return vec->size() == 0;
 	});
 
@@ -70,7 +72,7 @@ bool Validator::checkArraysListCoherence(const std::list<const Eigen::ArrayXd*>&
 };
 
 void Validator::generateCppDumpFile(const std::filesystem::path& dumpFilePath,
-									const std::list<const Eigen::ArrayXd*>& arraysList)
+												std::list<Ref<const Eigen::ArrayXd> > arraysList)
 {
 	// Ouvre le fichier de dump en mode binaire
 	std::ofstream dumpFile(dumpFilePath, std::ios::binary);
@@ -82,20 +84,20 @@ void Validator::generateCppDumpFile(const std::filesystem::path& dumpFilePath,
 	}
 
 	// Itération sur la liste de tableaux
-	for (const auto& arrayPtr : arraysList) {
+	for (const auto& array : arraysList) {
 		// Écriture de la taille du tableau
-		dumpFile << arrayPtr->size();
+		dumpFile << array->size();
 		// Écriture des données du tableau au format binaire
-		dumpFile.write(reinterpret_cast<const char*>(arrayPtr->data()), arrayPtr->size() * sizeof(double));
+		dumpFile.write(reinterpret_cast<const char*>(array->data()), array->size() * sizeof(double));
 	}
 
 	// Ferme le fichier de dump
 	dumpFile.close();
 };
 
-void Validator::compareDumpFiles(	const std::filesystem::path& cppFilePath,
-									const std::filesystem::path& matlabFilePath,
-									const std::list<const Eigen::ArrayXd*>& arraysList)
+void Validator::compareDumpFiles(const std::filesystem::path& cppFilePath,
+											const std::filesystem::path& matlabFilePath,
+											std::list<Ref<const Eigen::ArrayXd> > arraysList)
 {
 	// Ouvre les fichiers de dump
 	std::ifstream cppDumpFile(cppFilePath, std::ios::binary);
@@ -112,10 +114,10 @@ void Validator::compareDumpFiles(	const std::filesystem::path& cppFilePath,
 	m_errors.clear();
 
 	// Itération sur la liste de vecteurs
-	for (const auto& arrayPtr : arraysList) {
+	for (const auto& array : arraysList) {
 		// Lecture des données depuis les fichiers
-		Eigen::ArrayXd cppData(arrayPtr->size());
-		Eigen::ArrayXd matlabData(arrayPtr->size());
+		Eigen::ArrayXd cppData(array->size());
+		Eigen::ArrayXd matlabData(array->size());
 
 		// Récupération des tailles des tableaux et vérification de cohérence
 		size_t cppArraySize, matlabArraySize;
@@ -154,8 +156,8 @@ void Validator::compareDumpFiles(	const std::filesystem::path& cppFilePath,
 	matlabDumpFile.close();
 }
 
-void Validator::writeResultsFile(	const std::filesystem::path& resultsFilePath,
-									const std::list<const Eigen::ArrayXd*>& arraysList)
+void Validator::writeResultsFile(const std::filesystem::path& resultsFilePath,
+											std::list<Ref<const Eigen::ArrayXd> > arraysList)
 {
 	// Ouvre le fichier de résultats en mode ASCII
 	std::ofstream resultsFile(resultsFilePath);

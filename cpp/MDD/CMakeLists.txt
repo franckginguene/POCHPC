@@ -2,6 +2,7 @@ enableStrictWarnings()
 
 add_custom_target(HeaderOnly SOURCES  # Show these files in the IDEs
 	OptTraced.h
+        Types.h
 )
 
 enable_testing()
