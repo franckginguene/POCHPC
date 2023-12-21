@@ -32,6 +32,13 @@ set(GlobalIncludes
 	${CMAKE_SOURCE_DIR}/3rdParties/backward-cpp
 )  # Declared before adding subdirectories to let them inherit it
 
+if(MINGW)
+        set(GlobalLink
+                dbghelp
+        )  # Declared before adding subdirectories to let them inherit it
+endif()
+
+
 #####################################################################
 ##  subdirs   #######################################################
 #####################################################################

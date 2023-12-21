@@ -11,6 +11,7 @@ add_executable(MDD_Test
 target_include_directories(MDD_Test PUBLIC ${GlobalIncludes})
 target_link_libraries(MDD_Test
 	GTest::gtest_main
+        ${GlobalLink}
 )
 include(GoogleTest)
 gtest_discover_tests(MDD_Test)
