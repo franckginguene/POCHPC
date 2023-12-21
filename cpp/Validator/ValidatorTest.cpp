@@ -34,14 +34,14 @@ TEST_F(ValidatorTest, NominalCase) {
 	array2 << -4.0, 5.0, 6.0;
 
 	// Comparaison
-	Validator::getInstance().compareArrays(dumpPath, std::list<const Eigen::ArrayXd*>{&array1, & array2});
+	Validator::instance.compareArrays(dumpPath, {array1, array2});
 
 	// Tests du status
-	EXPECT_EQ(Validator::getInstance().getStatus(), Validator::Status::Ready);
+	EXPECT_EQ(Validator::instance.status(), Validator::Status::Ready);
 
 	// Tests sur les données
 	constexpr double epsilon = std::numeric_limits<double>::epsilon();
-	const auto& errors = Validator::getInstance().getErrors();
+	const auto& errors = Validator::instance.errors();
 	// Premier vecteur
 	EXPECT_NEAR(errors[0].maxAbsoluteError, 0.1, epsilon);
 	EXPECT_NEAR(errors[0].maxRelativeError, 0.1, epsilon);
@@ -66,13 +66,13 @@ TEST_F(ValidatorTest, AtLeastOneEmptyArray) {
 	Eigen::ArrayXd array1(3);
 	Eigen::ArrayXd array2(0);
 
-	Validator::getInstance().compareArrays(dumpPath, std::list<const Eigen::ArrayXd*>{&array1, &array2});
+	Validator::instance.compareArrays(dumpPath, {array1, array2});
 
 	// Tests du status
-	EXPECT_EQ(Validator::getInstance().getStatus(), Validator::Status::Error);
+	EXPECT_EQ(Validator::instance.status(), Validator::Status::Error);
 
 	// Test du message d'erreur
-	EXPECT_EQ(Validator::getInstance().getErrorMessage(), "At least one array of the list is empty. Comparison process stopped.");
+	EXPECT_EQ(Validator::instance.errorMessage(), "At least one array of the list is empty. Comparison process stopped.");
 }
 
 TEST_F(ValidatorTest, InconsistentArraySizes) {
@@ -87,13 +87,13 @@ TEST_F(ValidatorTest, InconsistentArraySizes) {
 	Eigen::ArrayXd array1(3);
 	Eigen::ArrayXd array2(2);
 
-	Validator::getInstance().compareArrays(dumpPath, std::list<const Eigen::ArrayXd*>{&array1, &array2});
+	Validator::instance.compareArrays(dumpPath, {array1, array2});
 
 	// Tests du status
-	EXPECT_EQ(Validator::getInstance().getStatus(), Validator::Status::Error);
+	EXPECT_EQ(Validator::instance.status(), Validator::Status::Error);
 
 	// Test du message d'erreur
-	EXPECT_EQ(Validator::getInstance().getErrorMessage(), "The sizes of the C++ and Matlab arrays are inconsistent. Comparison process stopped.");
+	EXPECT_EQ(Validator::instance.errorMessage(), "The sizes of the C++ and Matlab arrays are inconsistent. Comparison process stopped.");
 }
 
 TEST_F(ValidatorTest, MissingMatlabDump) {
@@ -104,13 +104,13 @@ TEST_F(ValidatorTest, MissingMatlabDump) {
 	Eigen::ArrayXd array1(3);
 	Eigen::ArrayXd array2(3);
 
-	Validator::getInstance().compareArrays(dumpPath, std::list<const Eigen::ArrayXd*>{&array1, &array2});
+	Validator::instance.compareArrays(dumpPath, {array1, array2});
 
 	// Tests du status
-	EXPECT_EQ(Validator::getInstance().getStatus(), Validator::Status::Error);
+	EXPECT_EQ(Validator::instance.status(), Validator::Status::Error);
 
 	// Test du message d'erreur
-	EXPECT_EQ(Validator::getInstance().getErrorMessage(), "The matlab dump file does not exist.");
+	EXPECT_EQ(Validator::instance.errorMessage(), "The matlab dump file does not exist.");
 }
 
 int main(int argc, char** argv) {
