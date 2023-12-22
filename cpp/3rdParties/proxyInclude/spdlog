@@ -1,0 +1,11 @@
+#ifdef _MSC_VER  // Vérifie si le code est compilé avec MSVC
+	#pragma warning(push, 0)
+	#include <spdlog/spdlog.h>
+	#pragma warning(pop)
+#else
+    // Tester une solution avec peut-être #pragma GCC system_header
+	#pragma GCC diagnostic push
+	#pragma GCC diagnostic ignored "-Wsome-warning"
+	#include <spdlog/spdlog.h>
+	#pragma GCC diagnostic pop
+#endif
