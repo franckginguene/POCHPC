@@ -1,27 +1,27 @@
 #include<proxyInclude/gtest>
 #include "MDD/OptTraced.h"
 
-std::string msg="Error 404: Humor Not Found";
-auto val=42;
-std::string val2="Les tests, ce n'est pas de la documentation ; la documentation, c'est la documentation <3";
+std::string message="Error 404: Humor Not Found";
+auto value=42;
+std::string value2="Les tests, ce n'est pas de la documentation ; la documentation, c'est la documentation <3";
 
 OptTraced<int> fail(){
 	return std::nullopt;
 }
 OptTraced<int> failMsg(){
-	return OptT::err(msg);
+	return OptT::err(message);
 }
 OptTraced<int> failTrace(){
 	return OptT::trace();
 }
 OptTraced<int> failTraceMsg(){
-	return OptT::tracedErr(msg);
+	return OptT::tracedErr(message);
 }
 OptTraced<int> succeed(){
-	return val;
+	return value;
 }
 OptTraced<std::string> succeed2(){
-	return val2;
+	return value2;
 }
 
 

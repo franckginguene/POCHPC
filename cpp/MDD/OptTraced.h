@@ -14,16 +14,16 @@ struct voidOpt{
 //! std::optional overload that as msg vector and some stack tracing ability
 template<class T=voidOpt>
 struct OptTraced: public std::optional<T>{
-	OptTraced(T val):std::optional<T>(val){}
-	OptTraced(T&& val):std::optional<T>(val){}
-	OptTraced(std::nullopt_t _):std::optional<T>(std::nullopt){}
+	OptTraced(T value):std::optional<T>(value){}
+	OptTraced(T&& value):std::optional<T>(value){}
+	OptTraced(std::nullopt_t ):std::optional<T>(std::nullopt){}
 	OptTraced(voidOpt&& other):std::optional<T>(std::nullopt),msgs(other.msgs){}
 	OptTraced(std::optional<T>& other):std::optional<T>(other){}
 	OptTraced(OptTraced<T>& other):std::optional<T>(other),msgs(other.msgs){}
 
 	void print(){
-		for(auto& msg : msgs){
-			std::cout << msg << std::endl;
+		for(auto& message : msgs){
+			std::cout << message << std::endl;
 		}
 	}
 
