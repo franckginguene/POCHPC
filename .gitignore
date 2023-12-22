@@ -3,3 +3,8 @@ build*
 *.user
 /.vs
 /out
+cpp/Validator/data/InconsistentArraySizes/dump_cpp
+cpp/Validator/data/NominalCase/dump_cpp
+cpp/Validator/data/NominalCase/results.txt
+cpp/Validator/data/ZerosCase/dump_cpp
+cpp/Validator/data/ZerosCase/results.txt
