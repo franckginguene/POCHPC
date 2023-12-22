@@ -54,6 +54,42 @@ TEST_F(ValidatorTest, NominalCase) {
 	EXPECT_NEAR(errors[1].meanRelativeError, 2./3., epsilon);
 }
 
+TEST_F(ValidatorTest, ZerosCase) {
+	// Chemins des fichiers de test
+	auto dumpPath = std::filesystem::path(VALIDATOR_DATA_PATH) / "ZerosCase";
+
+	// Le fichier de dump Matlab contient 2 Arrays :
+	// 1. 0. 3.
+	// 0. 0. 0.
+
+	// Ajoutez des vecteurs à la liste, par exemple :
+	Eigen::ArrayXd array1(3);
+	Eigen::ArrayXd array2(3);
+	array1 << 1.0, 0.0, 0.0;
+	array2 << 4.0, 0.0, 0.1;
+
+	// Comparaison
+	Validator::instance.compareArrays(dumpPath, { array1, array2 });
+
+	// Tests du status
+	EXPECT_EQ(Validator::instance.status(), Validator::Status::Ready);
+
+	// Tests sur les données
+	constexpr double epsilon = std::numeric_limits<double>::epsilon();
+	constexpr double infinity = std::numeric_limits<double>::infinity();
+	const auto& errors = Validator::instance.errors();
+	// Premier vecteur
+	EXPECT_NEAR(errors[0].maxAbsoluteError, 3., epsilon);
+	EXPECT_NEAR(errors[0].maxRelativeError, 1., epsilon);
+	EXPECT_NEAR(errors[0].meanAbsoluteError, 1., epsilon);
+	EXPECT_NEAR(errors[0].meanRelativeError, 0.5, epsilon);
+	// Deuxième vecteur
+	EXPECT_NEAR(errors[1].maxAbsoluteError, 4., epsilon);
+	EXPECT_EQ(errors[1].maxRelativeError, infinity);
+	EXPECT_NEAR(errors[1].meanAbsoluteError, 41./30., epsilon);
+	EXPECT_EQ(errors[1].meanRelativeError, infinity);
+}
+
 TEST_F(ValidatorTest, AtLeastOneEmptyArray) {
 	// Chemins des fichiers de test
 	std::filesystem::path dumpPath = absoluteDataValidationPath / "AtLeastOneEmptyArray";

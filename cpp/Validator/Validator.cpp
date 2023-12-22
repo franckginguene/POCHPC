@@ -135,15 +135,29 @@ void Validator::compareDumpFiles(const std::filesystem::path& cppFilePath,
 		cppDumpFile.read(reinterpret_cast<char*>(cppData.data()), cppData.size() * sizeof(double));
 		matlabDumpFile.read(reinterpret_cast<char*>(matlabData.data()), matlabData.size() * sizeof(double));
 
-		// Calcul des erreurs relatives et absolues
+		// Calcul de l'erreur absolue
 		Eigen::ArrayXd absoluteError = cppData - matlabData;
-		Eigen::ArrayXd relativeError = absoluteError / matlabData;
+		
+		// Calcul de l'erreur relative
+		// Cas où l'élément est compris entre -epsilon et epsilon : on ne divise pas, on ignore l'élément 
+		std::vector<double> relativeStdError;
+		for (int i = 0; i < cppData.size(); i++)
+		{
+			auto currentCppData = cppData[i];
+			auto currentMatlabData = matlabData[i];
+			
+			if (std::abs(currentMatlabData) > std::numeric_limits<double>::epsilon())
+			{
+				relativeStdError.push_back(abs(currentCppData - currentMatlabData) / currentMatlabData);
+			}
+		}
+		Eigen::Map<Eigen::ArrayXd> relativeError(relativeStdError.data(), relativeStdError.size());
 
-		// Calcul des valeurs maximales et moyennes des erreurs
+		// Calcul des valeurs maximales et moyennes des erreurs relatives et absolues
 		double maxAbsoluteError = absoluteError.abs().maxCoeff();
-		double maxRelativeError = relativeError.abs().maxCoeff();
+		double maxRelativeError = relativeError.size() == 0 ? std::numeric_limits<double>::infinity() : relativeError.abs().maxCoeff();
 		double meanAbsoluteError = absoluteError.abs().mean();
-		double meanRelativeError = relativeError.abs().mean();
+		double meanRelativeError = relativeError.size() == 0 ? std::numeric_limits<double>::infinity() : relativeError.abs().mean();
 
 		m_errors.push_back(Errors{ meanRelativeError , meanAbsoluteError, maxRelativeError, maxAbsoluteError });
 	}

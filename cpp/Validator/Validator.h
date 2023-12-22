@@ -7,6 +7,15 @@
 
 #include <proxyInclude/eigen>
 
+/**
+	* @brief Comparaison Matlab-C++ de tableaux de flottants. Matlab est considéré comme la référence
+	Les dumps Matlab sont nommés dump_mat et doivent être disponibles avant d'exécuter le Validator.
+	En sortie, on récupère les erreurs relatives et absolues, max et moyenne pour chacun des vecteurs.
+	Note sur l'erreur relative : dans le cas où des éléments des vecteurs matlab sont inférieurs à epsilon, 
+	ces éléments sont ignorés des calculs. L'erreurs relative moyenne et max est calculée sur les autres éléments.
+	Si tous les éléments d'un vecteur Matlab sont inférieurs à epsilon, alors les erreurs relatives 
+	moyenne et absolue valent "inf"
+*/
 class Validator{
 	// Constructeur privé pour empêcher l'instanciation directe
 	Validator(){};
@@ -30,12 +39,6 @@ public:
 		double maxAbsoluteError;
 	};
 
-
-	[[nodiscard]] const std::string& errorMessage() const noexcept { return m_errorMessage; };
-	[[nodiscard]] const std::vector<Errors>& errors() const noexcept { return m_errors; };
-	[[nodiscard]] const Status& status() const noexcept { return m_status; };
-
-
 	/**
 		* @brief Comparaison Matlab-C++ de tableaux de flottants
 		* Les fichiers cpp sont nommés dump_cpp
@@ -45,6 +48,14 @@ public:
 	*/
 	void compareArrays(const std::filesystem::path& dumpFilePath,
 							 std::list<Ref<const Eigen::ArrayXd> > arraysList);
+
+	/**
+	* @brief Getters
+	*/
+	[[nodiscard]] const std::string& errorMessage() const noexcept { return m_errorMessage; };
+	[[nodiscard]] const std::vector<Errors>& errors() const noexcept { return m_errors; };
+	[[nodiscard]] const Status& status() const noexcept { return m_status; };
+
 private:
 	/**
 	 * @brief Vérification de l'intégrité de la liste de tableaux
@@ -84,7 +95,9 @@ private:
 	 */
 	void printHeader(std::ofstream& resultsFile);
 
-
+	/**
+	 * @brief Membres
+	 */
 	Status m_status = Status::Ready;
 	std::string m_errorMessage;
 	std::vector<Errors> m_errors;
