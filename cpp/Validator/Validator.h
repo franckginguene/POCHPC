@@ -1,10 +1,11 @@
 #pragma once
 
 #include <filesystem>
-#include <Eigen/Eigen>
 #include <iostream>
 #include <vector>
 #include <MDD/Types.h>
+
+#include <proxyInclude/eigen>
 
 class Validator{
 	// Constructeur privé pour empêcher l'instanciation directe

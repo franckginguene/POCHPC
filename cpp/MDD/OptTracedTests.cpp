@@ -1,4 +1,4 @@
-#include <gtest/gtest.h>
+#include<proxyInclude/gtest>
 #include "MDD/OptTraced.h"
 
 std::string msg="Error 404: Humor Not Found";

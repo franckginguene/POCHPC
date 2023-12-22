@@ -7,4 +7,5 @@ if(MSVC)
 	#and apparently we do with MSVC...
 	set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 endif()
+
 add_subdirectory(gtest)

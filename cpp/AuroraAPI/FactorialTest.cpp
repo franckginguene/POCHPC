@@ -1,6 +1,6 @@
-#include <gtest/gtest.h>
-#include <spdlog/spdlog.h>
 #include "Factorial.h"
+
+#include<proxyInclude/gtest>
 
 TEST(Aurora, Eigen)
 {

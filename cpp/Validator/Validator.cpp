@@ -1,9 +1,6 @@
 #include "Validator.h"
 
 #include <fstream>
-#include <iostream>
-#include <spdlog/spdlog.h>
-#include <Eigen/Eigen>
 
 Validator Validator::instance={};
 

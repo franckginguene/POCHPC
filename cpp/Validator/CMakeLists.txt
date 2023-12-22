@@ -17,7 +17,9 @@ enable_testing()
 add_executable(Validation_Test
         ValidatorTest.cpp
 )
+
 target_include_directories(Validation_Test PUBLIC ${GlobalIncludes})
+
 target_link_libraries(Validation_Test
         Validation
         GTest::gtest_main

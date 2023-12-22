@@ -1,7 +1,8 @@
 #include <iostream>
-#include <spdlog/spdlog.h>
 
 #include "AuroraAPI/Factorial.h"
+
+#include <proxyInclude/spdlog>
 
 int main()
 {

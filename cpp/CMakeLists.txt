@@ -8,7 +8,6 @@ project(Aurora VERSION 1.0.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)  # VS19
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3")
 
 if(MSVC)
 	 add_compile_options("$<$<CONFIG:RELEASE>:/O2>")  # compiler optimisation level
@@ -17,11 +16,11 @@ else()
 endif()
 
 macro(enableStrictWarnings) # call this macro in a subdir CMakeLists to enable strict warnings
-	#if(MSVC)
-	#	 add_compile_options("/Wall")#"/WX"
-	#else()
-	#	 add_compile_options("-Wall" "-Wextra" "-Wpedantic")#"-Werror"
-	#endif()
+	if(MSVC)
+		 add_compile_options("/W4" "/WX")
+	else()
+		 add_compile_options("-Wall" "-Wextra" "-pedantic" "-Werror")
+	endif()
 endmacro()
 
 set(GlobalIncludes
@@ -30,6 +29,9 @@ set(GlobalIncludes
 	${CMAKE_SOURCE_DIR}/3rdParties/eigen
 	${CMAKE_SOURCE_DIR}/3rdParties/gtest/googletest/include
 	${CMAKE_SOURCE_DIR}/3rdParties/backward-cpp
+	# The path to the 3rdParty dependencies is added to enable the implementation of a 'proxy' that 
+	# avoids warnings for external includes. This way, we can compile our code with a high level of warning and consider warnings as errors.
+	${CMAKE_SOURCE_DIR}/3rdParties
 )  # Declared before adding subdirectories to let them inherit it
 
 if(MINGW)

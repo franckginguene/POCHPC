@@ -1,6 +1,6 @@
-#include <gtest/gtest.h>
-
 #include "Validator.h"
+
+#include <proxyInclude/gtest>
 
 // Classe de test
 class ValidatorTest : public ::testing::Test {

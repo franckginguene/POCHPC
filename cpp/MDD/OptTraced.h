@@ -4,7 +4,7 @@
 #include <string>
 #include <sstream>
 
-#include <backward.hpp>
+#include <proxyInclude/backward>
 
 //! helper class for OptTraced
 struct voidOpt{

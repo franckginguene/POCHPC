@@ -1,11 +1,11 @@
 #include "Factorial.h"
 
-#include <spdlog/spdlog.h>
-#include <Eigen/Eigen>
-#include <backward.hpp>
-
 #include <iostream>
 #include <thread>
+
+#include <proxyInclude/spdlog>
+#include <proxyInclude/backward>
+#include <proxyInclude/eigen>
 
 void doSomethingParallel(const int nbThreads)
 {
