@@ -32,7 +32,7 @@ TEST(AuroraMDD, OptTraced_fail){
 TEST(AuroraMDD, OptTraced_failMsg){
 	auto result = failMsg();
 	EXPECT_FALSE(result);
-	EXPECT_EQ(result.msgs.front(),msg);
+	EXPECT_EQ(result.msgs.front(), message);
 	EXPECT_EQ(result.msgs.size(),1);
 }
 TEST(AuroraMDD, OptTraced_failTrace){
@@ -45,17 +45,17 @@ TEST(AuroraMDD, OptTraced_failTraceMsg){
 	auto result = failTraceMsg();
 	EXPECT_FALSE(result);
 	EXPECT_EQ(result.msgs.size(),35);//tested to be that value
-	EXPECT_EQ(result.msgs.back(),msg);
+	EXPECT_EQ(result.msgs.back(), message);
 	result.print();
 }
 
 TEST(AuroraMDD, OptTraced_succeed){
 	auto result = succeed();
 	EXPECT_TRUE(result);
-	EXPECT_EQ(result.value(),val);
+	EXPECT_EQ(result.value(),value);
 }
 TEST(AuroraMDD, OptTraced_succeed2){
 	auto result = succeed2();
 	EXPECT_TRUE(result);
-	EXPECT_EQ(result.value(),val2);
+	EXPECT_EQ(result.value(),value2);
 }

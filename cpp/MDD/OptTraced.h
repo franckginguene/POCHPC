@@ -22,8 +22,8 @@ struct OptTraced: public std::optional<T>{
 	OptTraced(OptTraced<T>& other):std::optional<T>(other),msgs(other.msgs){}
 
 	void print(){
-		for(auto& message : msgs){
-			std::cout << message << std::endl;
+		for(auto& currentMessage : msgs){
+			std::cout << currentMessage << std::endl;
 		}
 	}
 
