@@ -15,13 +15,12 @@ else()
 	 add_compile_options("$<$<CONFIG:RELEASE>:-O3>")  # compiler optimisation level
 endif()
 
-macro(enableStrictWarnings) # call this macro in a subdir CMakeLists to enable strict warnings
-	if(MSVC)
-		 add_compile_options("/W4" "/WX")
-	else()
-		 add_compile_options("-Wall" "-Wextra" "-pedantic" "-Werror")
-	endif()
-endmacro()
+# enable strict warnings
+if(MSVC)
+		add_compile_options("/W4" "/WX")
+else()
+		add_compile_options("-Wall" "-Wextra" "-pedantic" "-Werror")
+endif()
 
 set(GlobalIncludes
 	../  # This will be interpreted relatively for each usage and is not relative to this current file

@@ -1,5 +1,3 @@
-enableStrictWarnings()
-
 # Preprocessor Definition to let Cpp code retrieve the path of this file
 add_definitions(-DVALIDATOR_DATA_PATH="${CMAKE_CURRENT_SOURCE_DIR}/data")
 
