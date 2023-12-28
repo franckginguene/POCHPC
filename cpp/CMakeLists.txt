@@ -28,6 +28,7 @@ set(GlobalIncludes
 	${CMAKE_SOURCE_DIR}/3rdParties/eigen
 	${CMAKE_SOURCE_DIR}/3rdParties/gtest/googletest/include
 	${CMAKE_SOURCE_DIR}/3rdParties/backward-cpp
+	${CMAKE_SOURCE_DIR}/3rdParties/benchmark/include
 	# The path to the 3rdParty dependencies is added to enable the implementation of a 'proxy' that 
 	# avoids warnings for external includes. This way, we can compile our code with a high level of warning and consider warnings as errors.
 	${CMAKE_SOURCE_DIR}/3rdParties

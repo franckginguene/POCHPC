@@ -9,3 +9,4 @@ if(MSVC)
 endif()
 
 add_subdirectory(gtest)
+add_subdirectory(benchmark)
