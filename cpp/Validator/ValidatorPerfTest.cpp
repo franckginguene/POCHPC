@@ -1,7 +1,8 @@
-#include <gtest/gtest.h>
-#include <benchmark/include/benchmark/benchmark.h>
 #include <iostream>
 #include <fstream>
+
+#include <proxyInclude/gtest>
+#include <proxyInclude/benchmark>
 
 class MyBenchmarkReporter : public benchmark::ConsoleReporter {
 public:
