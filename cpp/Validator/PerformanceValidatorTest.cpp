@@ -1,78 +1,11 @@
 #include <iostream>
 #include <fstream>
 
+#include <Validator/PerformanceValidator.h>
+
 #include <proxyInclude/gtest>
-#include <proxyInclude/benchmark>
 
-class MyBenchmarkReporter : public benchmark::ConsoleReporter {
-public:
-    explicit MyBenchmarkReporter(){}
-
-    void ReportRuns(const std::vector<Run>& reports) override {
-        for (const auto& run : reports) {
-            // print the header:
-            // --- if none was printed yet
-            bool print_header = !printed_header_;
-            // --- or if the format is tabular and this run
-            //     has different fields from the prev header
-            //print_header |= (output_options_ & OO_Tabular) &&
-            //    (!internal::SameNames(run.counters, prev_counters_));
-            if (print_header) {
-                printed_header_ = true;
-                prev_counters_ = run.counters;
-                PrintHeader(run);
-            }
-            // As an alternative to printing the headers like this, we could sort
-            // the benchmarks by header and then print. But this would require
-            // waiting for the full results before printing, or printing twice.
-            PrintRunData(run);
-        }
-
-        // Save reports
-        m_reports = reports;
-    }
-
-    bool ReportContext(const Context& context) override
-    {
-        name_field_width_ = context.name_field_width;
-        printed_header_ = false;
-        prev_counters_.clear();
-
-        PrintBasicContext(&GetErrorStream(), context);
-
-#ifdef BENCHMARK_OS_WINDOWS
-        if ((output_options_ & OO_Color) && &std::cout != &GetOutputStream()) {
-            GetErrorStream()
-                << "Color printing is only supported for stdout on windows."
-                " Disabling color printing\n";
-            output_options_ = static_cast<OutputOptions>(output_options_ & ~OO_Color);
-        }
-#endif
-
-        // if return "false", the benchmark run is never started
-        return true;
-    }
-
-public:
-    
-    /**
-    * @brief Renvoie le temps moyen du benchmark en seconde
-    * On part du principe que l'instance n'a servi qu'au bench d'une seule fonction.
-    * Dans les autres cas, la fonction renvoie l'infini
-    */
-    [[nodiscard]] double getMeanTimeSec() const
-    {
-        if (m_reports.size() != 1)
-        {
-            return std::numeric_limits<double>::infinity();
-        }
-        return m_reports[0].real_accumulated_time / m_reports[0].iterations;
-    }
-
-private:
-    std::vector<Run> m_reports;
-};
-
+// Fonctions à timer
 void applySin() {
     std::vector<double> a(100'000, 1.);
     std::transform(a.begin(), a.end(), a.begin(), [](double current) {return sin(current); });
@@ -121,7 +54,7 @@ void applyReferenceExp(std::vector<double> & a) {
     std::transform(a.begin(), a.end(), a.begin(), [](double current) {return exp(current); });
 }
 
-// Fonction de benchmark de Google Benchmark pour applySin
+// Fonction de benchmark de Google Benchmark
 static void BM_applySin(benchmark::State& state) {
     for (auto _ : state) {
         applySin();  // Appelez la fonction à mesurer ici
@@ -188,7 +121,7 @@ BENCHMARK(BM_applyReferenceExp);
 // Test Google Test pour applySin
 TEST(MyBenchmark, applySin) {
     // Create an instance of the custom benchmark reporter
-    MyBenchmarkReporter custom_reporter;
+    PerformanceValidator custom_reporter;
 
     // Run the benchmark with the custom reporter. Filtering is necessary.
     benchmark::RunSpecifiedBenchmarks(&custom_reporter, "BM_applySin");
@@ -199,21 +132,21 @@ TEST(MyBenchmark, applySin) {
 
 // Test Google Test pour applyExp
 TEST(MyBenchmark, applyExp) {
-    MyBenchmarkReporter custom_reporter;
+    PerformanceValidator custom_reporter;
     benchmark::RunSpecifiedBenchmarks(&custom_reporter, "BM_applyExp");
     EXPECT_LT(custom_reporter.getMeanTimeSec(), 1e-3);
 }
 
 // Test Google Test pour applyReferenceExp
 TEST(MyBenchmark, applyReferenceExp) {
-    MyBenchmarkReporter custom_reporter;
+    PerformanceValidator custom_reporter;
     benchmark::RunSpecifiedBenchmarks(&custom_reporter, "BM_applyReferenceExp");
     EXPECT_LT(custom_reporter.getMeanTimeSec(), 1e-3);
 }
 
 // Test Google Test pour tout
 TEST(MyBenchmark, applyAll) {
-    MyBenchmarkReporter custom_reporter;
+    PerformanceValidator custom_reporter;
     benchmark::RunSpecifiedBenchmarks(&custom_reporter);
 }
 
