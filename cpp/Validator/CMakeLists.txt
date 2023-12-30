@@ -43,6 +43,11 @@ target_link_libraries(Validation_Perf_Test
         ${GlobalLink}
 )
 
+target_compile_options(Validation_Perf_Test PRIVATE
+    $<$<CXX_COMPILER_ID:GNU>:-march=native -mtune=native -ffast-math -mavx2>
+    $<$<CXX_COMPILER_ID:MSVC>:/fp:fast /arch:AVX2> # add  /Qvec-report:2 for report vectorization
+)
+
 include(GoogleTest)
 gtest_discover_tests(Validation_Test)
 gtest_discover_tests(Validation_Perf_Test)

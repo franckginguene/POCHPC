@@ -12,7 +12,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 if(MSVC)
 	 add_compile_options("$<$<CONFIG:RELEASE>:/O2>")  # compiler optimisation level
 else()
-	 add_compile_options("$<$<CONFIG:RELEASE>:-O3 -march=native -mtune=native>")  # compiler optimisation level
+	 add_compile_options("$<$<CONFIG:RELEASE>:-O3>")  # compiler optimisation level
 endif()
 
 # enable strict warnings
