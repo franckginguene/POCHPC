@@ -6,10 +6,7 @@
 
 class MyBenchmarkReporter : public benchmark::ConsoleReporter {
 public:
-    //explicit MyBenchmarkReporter(std::ostream& output_stream)
-    //    : output_stream_(output_stream) {}
-    explicit MyBenchmarkReporter(std::ostream& output_stream)
-        : output_stream_(output_stream) {}
+    explicit MyBenchmarkReporter(){}
 
     void ReportRuns(const std::vector<Run>& reports) override {
         for (const auto& run : reports) {
@@ -30,6 +27,9 @@ public:
             // waiting for the full results before printing, or printing twice.
             PrintRunData(run);
         }
+
+        // Save reports
+        m_reports = reports;
     }
 
     bool ReportContext(const Context& context) override
@@ -48,70 +48,173 @@ public:
             output_options_ = static_cast<OutputOptions>(output_options_ & ~OO_Color);
         }
 #endif
+
         // if return "false", the benchmark run is never started
         return true;
     }
 
+public:
+    
+    /**
+    * @brief Renvoie le temps moyen du benchmark en seconde
+    * On part du principe que l'instance n'a servi qu'au bench d'une seule fonction.
+    * Dans les autres cas, la fonction renvoie l'infini
+    */
+    [[nodiscard]] double getMeanTimeSec() const
+    {
+        if (m_reports.size() != 1)
+        {
+            return std::numeric_limits<double>::infinity();
+        }
+        return m_reports[0].real_accumulated_time / m_reports[0].iterations;
+    }
 
 private:
-    std::ostream& output_stream_;
+    std::vector<Run> m_reports;
 };
 
-void myFunction1() {
-    // ... implémentation de la fonction ...
+void applySin() {
     std::vector<double> a(100'000, 1.);
     std::transform(a.begin(), a.end(), a.begin(), [](double current) {return sin(current); });
 }
 
-void myFunction2() {
-    // ... implémentation de la fonction ...
+void applyCos() {
+    std::vector<double> a(100'000, 2.);
+    std::transform(a.begin(), a.end(), a.begin(), [](double current) {return cos(current); });
+}
+
+void applyTan() {
+    std::vector<double> a(100'000, 2.);
+    std::transform(a.begin(), a.end(), a.begin(), [](double current) {return tan(current); });
+}
+
+void applyAsin() {
     std::vector<double> a(100'000, 1.);
-    std::transform(a.begin(), a.end(), a.begin(), [](double current) {return sin(current); });
+    std::transform(a.begin(), a.end(), a.begin(), [](double current) {return asin(current); });
 }
 
-// Fonction de benchmark de Google Benchmark pour myFunction1
-static void BM_MyFunction1(benchmark::State& state) {
+void applyAcos() {
+    std::vector<double> a(100'000, 2.);
+    std::transform(a.begin(), a.end(), a.begin(), [](double current) {return acos(current); });
+}
+
+void applyAtan() {
+    std::vector<double> a(100'000, 2.);
+    std::transform(a.begin(), a.end(), a.begin(), [](double current) {return atan(current); });
+}
+
+void applyExp() {
+    std::vector<double> a(100'000, 2.);
+    std::transform(a.begin(), a.end(), a.begin(), [](double current) {return exp(current); });
+}
+
+void applyLog() {
+    std::vector<double> a(100'000, 2.);
+    std::transform(a.begin(), a.end(), a.begin(), [](double current) {return log(current); });
+}
+void applyPow() {
+    std::vector<double> a(100'000, 2.);
+    std::transform(a.begin(), a.end(), a.begin(), [](double current) {return pow(current, 1.3); });
+}
+
+void applyReferenceExp(std::vector<double> & a) {
+    std::transform(a.begin(), a.end(), a.begin(), [](double current) {return exp(current); });
+}
+
+// Fonction de benchmark de Google Benchmark pour applySin
+static void BM_applySin(benchmark::State& state) {
     for (auto _ : state) {
-        myFunction1();  // Appelez la fonction à mesurer ici
+        applySin();  // Appelez la fonction à mesurer ici
     }
 }
-// Fonction de benchmark de Google Benchmark pour myFunction1
-static void BM_MyFunction2(benchmark::State& state) {
+static void BM_applyCos(benchmark::State& state) {
     for (auto _ : state) {
-        myFunction2();  // Appelez la fonction à mesurer ici
+        applyCos();
     }
 }
-BENCHMARK(BM_MyFunction1);
-BENCHMARK(BM_MyFunction2);
-
-// Test Google Test pour myFunction1
-TEST(MyBenchmark, MyFunction1) {
-    // Redirect benchmark results to a file
-    std::ofstream output_file("benchmark_results.txt");
-
-    // Create an instance of the custom benchmark reporter
-    MyBenchmarkReporter custom_reporter(output_file);
-
-    // Run the benchmark with the custom reporter
-    benchmark::RunSpecifiedBenchmarks(&custom_reporter, "BM_MyFunction1");
-
-    // Assertion Google Test basée sur le temps d'exécution pour myFunction1
-    //EXPECT_LT(avg_time, 1.0);  // Vous pouvez ajuster la durée souhaitée ici
+static void BM_applyTan(benchmark::State& state) {
+    for (auto _ : state) {
+        applyTan();
+    }
+}
+static void BM_applyAsin(benchmark::State& state) {
+    for (auto _ : state) {
+        applyAsin();
+    }
+}
+static void BM_applyAcos(benchmark::State& state) {
+    for (auto _ : state) {
+        applyAcos();
+    }
+}
+static void BM_applyAtan(benchmark::State& state) {
+    for (auto _ : state) {
+        applyAtan();
+    }
+}
+static void BM_applyExp(benchmark::State& state) {
+    for (auto _ : state) {
+        applyExp();
+    }
+}
+static void BM_applyLog(benchmark::State& state) {
+    for (auto _ : state) {
+        applyLog();
+    }
+}
+static void BM_applyPow(benchmark::State& state) {
+    for (auto _ : state) {
+        applyPow();
+    }
+}
+static void BM_applyReferenceExp(benchmark::State& state) {
+    std::vector<double> a(100'000, 3.);
+    for (auto _ : state) {
+        applyReferenceExp(a);
+    }
 }
 
-// Test Google Test pour myFunction2
-TEST(MyBenchmark, MyFunction2) {
-    // Redirect benchmark results to a file
-    std::ofstream output_file("benchmark_results.txt");
+BENCHMARK(BM_applySin);
+BENCHMARK(BM_applyCos);
+BENCHMARK(BM_applyTan);
+BENCHMARK(BM_applyAsin);
+BENCHMARK(BM_applyAcos);
+BENCHMARK(BM_applyAtan);
+BENCHMARK(BM_applyExp);
+BENCHMARK(BM_applyLog);
+BENCHMARK(BM_applyPow);
+BENCHMARK(BM_applyReferenceExp);
 
+// Test Google Test pour applySin
+TEST(MyBenchmark, applySin) {
     // Create an instance of the custom benchmark reporter
-    MyBenchmarkReporter custom_reporter(output_file);
+    MyBenchmarkReporter custom_reporter;
 
-    // Run the benchmark with the custom reporter
-    benchmark::RunSpecifiedBenchmarks(&custom_reporter, "BM_MyFunction2");
+    // Run the benchmark with the custom reporter. Filtering is necessary.
+    benchmark::RunSpecifiedBenchmarks(&custom_reporter, "BM_applySin");
 
-    // Assertion Google Test basée sur le temps d'exécution pour myFunction1
-    //EXPECT_LT(avg_time, 1.0);  // Vous pouvez ajuster la durée souhaitée ici
+    // Assertion Google Test basée sur le temps d'exécution pour applySin en seconde
+    EXPECT_LT(custom_reporter.getMeanTimeSec(), 1e-3);
+}
+
+// Test Google Test pour applyExp
+TEST(MyBenchmark, applyExp) {
+    MyBenchmarkReporter custom_reporter;
+    benchmark::RunSpecifiedBenchmarks(&custom_reporter, "BM_applyExp");
+    EXPECT_LT(custom_reporter.getMeanTimeSec(), 1e-3);
+}
+
+// Test Google Test pour applyReferenceExp
+TEST(MyBenchmark, applyReferenceExp) {
+    MyBenchmarkReporter custom_reporter;
+    benchmark::RunSpecifiedBenchmarks(&custom_reporter, "BM_applyReferenceExp");
+    EXPECT_LT(custom_reporter.getMeanTimeSec(), 1e-3);
+}
+
+// Test Google Test pour tout
+TEST(MyBenchmark, applyAll) {
+    MyBenchmarkReporter custom_reporter;
+    benchmark::RunSpecifiedBenchmarks(&custom_reporter);
 }
 
 int main(int argc, char** argv) {
