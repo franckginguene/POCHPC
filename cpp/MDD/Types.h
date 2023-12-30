@@ -1,5 +1,10 @@
 #include <optional>
 
+#include <proxyInclude/eigen>
+
+using RealType = double;
+using ArrayType = Eigen::ArrayXd;
+
 //! optional reference to an object
 template<class T>
 struct OptRef: public std::optional<std::reference_wrapper<T>>{

@@ -1,6 +1,8 @@
 add_library(AuroraAPI
-	Factorial.h
-	Factorial.cpp
+	Simulation.h
+	Simulation.cpp
+	Fitness.h
+	Fitness.cpp
 )
 target_include_directories(AuroraAPI PUBLIC ${GlobalIncludes})
 target_link_libraries(AuroraAPI ${GlobalLink})
@@ -8,7 +10,7 @@ target_link_libraries(AuroraAPI ${GlobalLink})
 #http://google.github.io/googletest/quickstart-cmake.html
 enable_testing()
 add_executable(AuroraAPI_Test
-	FactorialTest.cpp
+	SimulationTest.cpp
 )
 target_include_directories(AuroraAPI_Test PUBLIC ${GlobalIncludes})
 target_link_libraries(AuroraAPI_Test

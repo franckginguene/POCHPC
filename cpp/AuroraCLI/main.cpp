@@ -1,6 +1,7 @@
 #include <iostream>
 
-#include "AuroraAPI/Factorial.h"
+#include "AuroraAPI/Simulation.h"
+#include "AuroraAPI/Fitness.h"
 
 #include <proxyInclude/spdlog>
 
@@ -10,8 +11,8 @@ int main()
 	spdlog::set_pattern("[%H:%M:%S] [%t] %v");
 	spdlog::info("Logger initialized");
 
-	const int nbThreads = 1;
-	doSomethingParallel(nbThreads);
+	Simulation simulation;
+	simulation.launch(Fitness::doSomethingWithEigen);
 
 	return 0;
 }
