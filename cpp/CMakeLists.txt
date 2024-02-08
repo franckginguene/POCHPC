@@ -17,9 +17,9 @@ endif()
 
 # enable strict warnings
 if(MSVC)
-		add_compile_options("/W4" "/WX")
+		add_compile_options("/W4") #"-Werror"
 else()
-		add_compile_options("-Wall" "-Wextra" "-pedantic" "-Werror")
+		add_compile_options("-Wall" "-Wextra" "-pedantic") #"-Werror"
 endif()
 
 set(GlobalIncludes

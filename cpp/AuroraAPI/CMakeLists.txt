@@ -18,5 +18,6 @@ target_link_libraries(AuroraAPI_Test
 	GTest::gtest_main
         ${GlobalLink}
 )
+
 include(GoogleTest)
 gtest_discover_tests(AuroraAPI_Test)

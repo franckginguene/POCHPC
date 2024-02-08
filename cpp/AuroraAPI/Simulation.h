@@ -21,9 +21,6 @@ protected:
     // Fonction d'initialisation
     void initialize();
 
-    // Fonction pour attendre la fin de tous les threads
-    void joinThreads();
-
 private:
-    std::vector<std::thread> threads_;
+    unsigned int _numThreads;
 };
